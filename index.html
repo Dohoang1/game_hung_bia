@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Beer Catching Game</title>
+</head>
+<body>
+<style>
+    .container {
+        display: flex;
+        justify-content: center;
+    }
+    .display {
+        border-collapse: collapse;
+        border: 1px solid;
+        box-shadow: 5px 5px 15px rgba(0,0,0,0.9);
+        border-radius: 15px;
+    }
+    #startButton {
+        display: block;
+        margin: 20px auto;
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    #startButton:disabled {
+        background-color: #ddd;
+        cursor: not-allowed;
+    }
+</style>
+
+<div class="container">
+    <canvas class="display" id="gameCanvas" width="500" height="600"></canvas>
+    <img class="display" id="frog" src="imgs/frog.jpg" height="600" width="600"/>
+</div>
+
+<button id="startButton">Play Game</button>
+<audio id="pointsMusic" src="sounds/getpoint.mp3"></audio>
+<audio id="bgmusic" src="sounds/bgmusic.mp3"></audio>
+<audio id="gameover" src="sounds/gameover.mp3" loop ></audio>
+
+<script src="js/level.js"></script>
+<script src="js/score.js"></script>
+<script src="js/basket.js"></script>
+<script src="js/background.js"></script>
+<script src="js/beer.js"></script>
+<script src="my.js"></script>
+</body>
+</html>
