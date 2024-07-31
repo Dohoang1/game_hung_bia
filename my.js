@@ -53,7 +53,7 @@ function update() {
 
             if (score.value % 10 === 0) {
                 beers.push(new Beer(Math.random() * (canvas.width - 20), Math.randomInt(-1400,-600), 28, 50, 3, 'imgs/beer.png'));
-                lvl.value++;
+                lvl.increase();
             }
         }
 

@@ -12,8 +12,4 @@ class Level {
     increase() {
         this.value++;
     }
-
-    reset() {
-        this.value = 1;
-    }
 }

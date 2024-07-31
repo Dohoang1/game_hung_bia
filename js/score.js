@@ -12,8 +12,4 @@ class Score {
     increase() {
         this.value++;
     }
-
-    reset() {
-        this.value = 0;
-    }
 }
