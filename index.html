@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Beer Catching Game</title>
+
+
 </head>
 <body>
 <style>
@@ -16,7 +18,7 @@
         box-shadow: 5px 5px 15px rgba(0,0,0,0.9);
         border-radius: 15px;
     }
-    #startButton {
+    #startButton, #replayButton {
         display: block;
         margin: 20px auto;
         padding: 10px 20px;
@@ -27,22 +29,52 @@
         border-radius: 5px;
         cursor: pointer;
     }
-    #startButton:disabled {
+    #startButton:disabled, #replayButton:disabled {
         background-color: #ddd;
         cursor: not-allowed;
+    }
+    .instructions {
+        margin-left: 20px;
+        font-family: Arial, sans-serif;
+        max-width: 300px;
+        line-height: 1.4;
+        font-size: 25px;
+        border: 1px solid black;
+        box-shadow: 5px 5px 15px rgba(0,0,0,0.9);
+        border-radius: 15px;
+        background-image: url("imgs/instrubg.jpg");
+        color: white;
     }
 </style>
 
 <div class="container">
-    <canvas class="display" id="gameCanvas" width="500" height="600"></canvas>
-    <img class="display" id="frog" src="imgs/frog.jpg" height="600" width="600"/>
+    <div class="instructions">
+        <h2 style="text-align: center">How to Play</h2>
+        <ul>
+            <li>Use the left and right arrow keys to move the basket.</li>
+            <li>Catch the falling beers to score points.</li>
+            <li>If you miss a beer, you lose a life.</li>
+            <li>Every 10 points, you level up and gain an extra life.</li>
+            <li>Game over when you run out of lives.</li>
+            <li>Have fun!</li>
+        </ul>
+    </div>
+    <canvas class="display" id="gameCanvas" width="500" height="800"></canvas>
+    <img class="display" id="frog" src="imgs/frog.jpg" height="800" width="600"/>
+
+
+
 </div>
 
-<button id="startButton">Play Game</button>
+<button id="startButton">Play Game</button> <span> <button id="replayButton" style="display: none">Replay</button> </span>
+
 <audio id="pointsMusic" src="sounds/getpoint.mp3"></audio>
 <audio id="bgmusic" src="sounds/bgmusic.mp3"></audio>
 <audio id="gameover" src="sounds/gameover.mp3" loop ></audio>
+<audio id="beerbroke" src="sounds/broke.mp3"></audio>
+<audio id="lvlup" src="sounds/lvlup.mp3"></audio>
 
+<script src="js/lives.js"></script>
 <script src="js/level.js"></script>
 <script src="js/score.js"></script>
 <script src="js/basket.js"></script>

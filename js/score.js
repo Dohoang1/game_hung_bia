@@ -1,6 +1,7 @@
 class Score {
-    constructor() {
+    constructor(pointsMusic) {
         this.value = 0;
+        this.pointsMusic = pointsMusic
     }
 
     draw(ctx) {
@@ -10,6 +11,8 @@ class Score {
     }
 
     increase() {
+        this.pointsMusic.currentTime = 0;
+        this.pointsMusic.play();
         this.value++;
     }
 }

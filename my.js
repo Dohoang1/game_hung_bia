@@ -1,14 +1,18 @@
 let bgMusic = document.getElementById("bgmusic");
 let pointsMusic = document.getElementById("pointsMusic");
 let gameoverMusic = document.getElementById('gameover')
+let beerBroke = document.getElementById("beerbroke")
+let lvlUp = document.getElementById("lvlup")
 let canvas = document.getElementById("gameCanvas");
 let ctx = canvas.getContext("2d");
 let basket = new Basket(canvas.width / 2, canvas.height - 65, 100, 60, 10,'imgs/basket.jpg');
-let score = new Score();
+let score = new Score(pointsMusic);
 let background = new Background(getRandomColor(),"white");
 let isGameOver = false;
 let lvl = new Level();
 let gameStarted = false;
+let lives = new Lives(3);
+
 
 function getRandomColor() {
     let letters = '0123456789ABCDEF';
@@ -35,6 +39,7 @@ function update() {
 
     basket.update(canvas.width);
 
+
     beers.forEach((beer, index) => {
         beer.moveDown();
 
@@ -48,19 +53,26 @@ function update() {
             beer.x <= basket.x + basket.width
         ) {
             score.increase();
-            pointsMusic.play();
-            beer.resetBeer(Math.random() * (canvas.width - 20), Math.randomInt(-600,-200), 3, 'imgs/beer.png');
+            beer.resetBeer(Math.random() * (canvas.width - 20), Math.randomInt(-600,-200), 3 + Math.floor(score.value / 10), 'imgs/beer.png');
 
             if (score.value % 10 === 0) {
-                beers.push(new Beer(Math.random() * (canvas.width - 20), Math.randomInt(-1400,-600), 28, 50, 3, 'imgs/beer.png'));
+                beers.push(new Beer(Math.random() * (canvas.width - 20), Math.randomInt(-1400,-600), 28, 50, 3 + Math.floor(score.value / 10), 'imgs/beer.png'));
                 lvl.increase();
+                lives.value++;
+                lvlUp.play();
             }
         }
-
         if (beer.y + beer.height >= canvas.height) {
-            isGameOver = true;
-            bgMusic.pause();
+            lives.decrease();
+            beerBroke.play();
+            beer.resetBeer(Math.random() * (canvas.width - 20), Math.randomInt(-600,-200), 3 + Math.floor(score.value / 10), 'imgs/beer.png');
         }
+
+            if (lives.value <= 0) {
+                isGameOver = true;
+                bgMusic.pause();
+                document.getElementById("replayButton").style.display = "block";
+            }
     });
 }
 
@@ -73,6 +85,7 @@ function gameLoop() {
     beers.forEach(beer => beer.draw(ctx));
     score.draw(ctx);
     lvl.draw(ctx);
+    lives.draw(ctx);
 
     let img = document.getElementById("frog");
 
@@ -80,6 +93,8 @@ function gameLoop() {
         img.src = "imgs/frog2.jfif";
         drawGameOver();
         gameoverMusic.play();
+
+
     } else {
         if (score.value >= 10) img.src = "imgs/frog4.jpg";
         if (score.value >= 20) img.src = "imgs/frog5.jpg";
@@ -89,6 +104,30 @@ function gameLoop() {
         requestAnimationFrame(gameLoop);
     }
 }
+function resetGame() {
+    gameoverMusic.currentTime = 0;
+    gameoverMusic.pause();
+    bgMusic.currentTime = 0;
+
+    basket = new Basket(canvas.width / 2, canvas.height - 65, 100, 60, 10,'imgs/basket.jpg');
+    score = new Score(pointsMusic);
+    background = new Background(getRandomColor(),"white");
+    isGameOver = false;
+    lvl = new Level();
+    lives = new Lives(3);
+    beers = [
+        new Beer(Math.random() * (canvas.width - 20), 0, 28, 50, 3, 'imgs/beer.png')
+    ];
+    gameStarted = false;
+    document.getElementById("startButton").disabled = false;
+    document.getElementById("replayButton").style.display = "none";
+    document.getElementById("frog").src = "imgs/frog.jpg";
+}
+
+document.getElementById("replayButton").addEventListener("click", () => {
+    resetGame();
+    document.getElementById("startButton").click();
+});
 
 document.addEventListener("keydown", (event) => {
     if (event.keyCode === 37) {
