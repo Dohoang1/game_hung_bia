@@ -12,6 +12,7 @@ let isGameOver = false;
 let lvl = new Level();
 let gameStarted = false;
 let lives = new Lives(3);
+let brokenBeers = [];
 
 
 function getRandomColor() {
@@ -53,10 +54,10 @@ function update() {
             beer.x <= basket.x + basket.width
         ) {
             score.increase();
-            beer.resetBeer(Math.random() * (canvas.width - 20), Math.randomInt(-600,-200), 3 + Math.floor(score.value / 10), 'imgs/beer.png');
+            beer.resetBeer(Math.random() * (canvas.width - 20), Math.randomInt(-600,-200), (Math.random() * (score.value / 10)) + 3, 'imgs/beer.png');
 
             if (score.value % 10 === 0) {
-                beers.push(new Beer(Math.random() * (canvas.width - 20), Math.randomInt(-1400,-600), 28, 50, 3 + Math.floor(score.value / 10), 'imgs/beer.png'));
+                beers.push(new Beer(Math.random() * (canvas.width - 20), Math.randomInt(-1400,-600), 28, 50, (Math.random() * (score.value / 10)) + 3, 'imgs/beer.png'));
                 lvl.increase();
                 lives.value++;
                 lvlUp.play();
@@ -65,7 +66,8 @@ function update() {
         if (beer.y + beer.height >= canvas.height) {
             lives.decrease();
             beerBroke.play();
-            beer.resetBeer(Math.random() * (canvas.width - 20), Math.randomInt(-600,-200), 3 + Math.floor(score.value / 10), 'imgs/beer.png');
+            brokenBeers.push(new BrokenBeer(beer.x - 10, beer.y + 15, 50, 40, 'imgs/brokenbeer.png'));
+            beer.resetBeer(Math.random() * (canvas.width - 20), Math.randomInt(-600,-200), (Math.random() * (score.value / 10)) + 3, 'imgs/beer.png');
         }
 
             if (lives.value <= 0) {
@@ -74,6 +76,7 @@ function update() {
                 document.getElementById("replayButton").style.display = "block";
             }
     });
+    brokenBeers = brokenBeers.filter(brokenBeer => !brokenBeer.isExpired());
 }
 
 function gameLoop() {
@@ -86,6 +89,7 @@ function gameLoop() {
     score.draw(ctx);
     lvl.draw(ctx);
     lives.draw(ctx);
+    brokenBeers.forEach(brokenBeer => brokenBeer.draw(ctx));
 
     let img = document.getElementById("frog");
 
