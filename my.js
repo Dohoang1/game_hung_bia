@@ -13,6 +13,23 @@ let lvl = new Level();
 let gameStarted = false;
 let lives = new Lives(3);
 let brokenBeers = [];
+let playerNameInput = document.getElementById("playerNameInput");
+let highScoreDisplay = document.getElementById("highScore");
+
+let highScore = localStorage.getItem("highScore") || 0;
+let highScorePlayer = localStorage.getItem("highScorePlayer") || "No one";
+
+highScoreDisplay.textContent = `High Score: ${highScore} by ${highScorePlayer}`;
+
+function updateHighScore() {
+    if (score.value > highScore) {
+        highScore = score.value;
+        highScorePlayer = playerNameInput.value || "Anonymous";
+        localStorage.setItem("highScore", highScore);
+        localStorage.setItem("highScorePlayer", highScorePlayer);
+        highScoreDisplay.textContent = `High Score: ${highScore} by ${highScorePlayer}`;
+    }
+}
 
 
 function getRandomColor() {
@@ -54,10 +71,10 @@ function update() {
             beer.x <= basket.x + basket.width
         ) {
             score.increase();
-            beer.resetBeer(Math.random() * (canvas.width - 20), Math.randomInt(-600,-200), (Math.random() * (score.value / 10)) + 3, 'imgs/beer.png');
+            beer.resetBeer(Math.random() * (canvas.width - 20), Math.randomInt(-600,-200), (Math.random() * (score.value / 20)) + 3, 'imgs/beer.png');
 
             if (score.value % 10 === 0) {
-                beers.push(new Beer(Math.random() * (canvas.width - 20), Math.randomInt(-1400,-600), 28, 50, (Math.random() * (score.value / 10)) + 3, 'imgs/beer.png'));
+                beers.push(new Beer(Math.random() * (canvas.width - 20), Math.randomInt(-1400,-600), 28, 50, (Math.random() * (score.value / 20)) + 3, 'imgs/beer.png'));
                 lvl.increase();
                 lives.value++;
                 lvlUp.play();
@@ -67,7 +84,7 @@ function update() {
             lives.decrease();
             beerBroke.play();
             brokenBeers.push(new BrokenBeer(beer.x - 10, beer.y + 15, 50, 40, 'imgs/brokenbeer.png'));
-            beer.resetBeer(Math.random() * (canvas.width - 20), Math.randomInt(-600,-200), (Math.random() * (score.value / 10)) + 3, 'imgs/beer.png');
+            beer.resetBeer(Math.random() * (canvas.width - 20), Math.randomInt(-600,-200), (Math.random() * (score.value / 20)) + 3, 'imgs/beer.png');
         }
 
             if (lives.value <= 0) {
@@ -94,9 +111,10 @@ function gameLoop() {
     let img = document.getElementById("frog");
 
     if (isGameOver) {
-        img.src = "imgs/frog2.jfif";
+        img.src = "imgs/frog2.jpg";
         drawGameOver();
         gameoverMusic.play();
+        updateHighScore();
 
 
     } else {
