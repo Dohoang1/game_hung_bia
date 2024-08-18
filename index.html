@@ -66,8 +66,18 @@
         font-size: 20px;
         margin-top: 20px;
     }
+    h1 {
+        font-family: Arial;
+        text-align: center;
+        font-size: 40px;
+    }
 
 </style>
+
+<h1>Pepe is sad. Help him become happy again by catching as much beer as possible!</h1>
+<input type="text" id="playerNameInput" placeholder="Enter your name" />
+<button id="startButton">Play Game</button> <span> <button id="replayButton" style="display: none">Replay</button> </span>
+
 
 <div class="container">
     <div class="instructions">
@@ -80,17 +90,15 @@
             <li>Game over when you run out of lives.</li>
             <li>Have fun!</li>
         </ul>
+        <p>HighScore:</p>
+        <div id="highScore">0</div>
     </div>
-
     <canvas class="display" id="gameCanvas" width="500" height="800"></canvas>
     <img class="display" id="frog" src="imgs/frog.jpg" height="800" width="600"/>
 
 
 
 </div>
-<input type="text" id="playerNameInput" placeholder="Enter your name" />
-<button id="startButton">Play Game</button> <span> <button id="replayButton" style="display: none">Replay</button> </span>
-<div id="highScore">High Score: 0</div>
 
 <audio id="pointsMusic" src="sounds/getpoint.mp3"></audio>
 <audio id="bgmusic" src="sounds/bgmusic.mp3"></audio>
